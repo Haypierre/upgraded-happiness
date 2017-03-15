@@ -2,7 +2,7 @@
 
 This is a small school math project dealing with some basics probabilities notion (Binomial and Poisson distribution).
 It is fun to constate the huge computation time distance between these two.
-It is coded with Python.
+It is coded with Python3.
 
 Here is the subject:
 
@@ -17,7 +17,7 @@ This program could be reuse to a larger scale, so you fear the computation of th
 and you consider to approximate it with a Poisson distribution ; how smart.
 You have then to program a software to attest this, by :
 • compute the binomial coefficient n
-given k and n (emphasizng the coputation speed and stack optimization),
+given k and n (emphasizing the computation speed and stack optimization),
 • compare binomial and Poisson distributions given the average duration of calls, printing
 – the probabilities to get n simultaneous calls (for n increasing from 0 to 50),
 – the probability of overload,
