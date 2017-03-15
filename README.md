@@ -1,24 +1,8 @@
-# upgraded-happiness
+This is a repositary created to show some simple math application using pyhton3.
 
-This is a small school math project dealing with some basics probabilities notion (Binomial and Poisson distribution).
-It is fun to constate the huge computation time distance between these two.
-It is coded with Python3.
+You will find in every subdirectory the python script solution with the associated subject.
 
-Here is the subject:
+Exercices are dealing with basic probabilites and statistics knowledge therefore
+it's a goot way to improve some python skills and math notion for everyone :)
 
-
-Uncle Luigi runs a 25-phone-hotline in Pondichéry.
-He reckons 3500 people could possibly call each day (8 hours), and would like to know the probability of overload
-(that is, the probability no line is available), depending on the average duration of calls.
-Here you got a mission.
-The random variable representing the number of people calling at a given time follows the binomial distribution,
-whereas calls are independant from each others.
-This program could be reuse to a larger scale, so you fear the computation of the binomial distribution may be timeconsuming,
-and you consider to approximate it with a Poisson distribution ; how smart.
-You have then to program a software to attest this, by :
-• compute the binomial coefficient n
-given k and n (emphasizing the computation speed and stack optimization),
-• compare binomial and Poisson distributions given the average duration of calls, printing
-– the probabilities to get n simultaneous calls (for n increasing from 0 to 50),
-– the probability of overload,
-– the computation time.
+Have Fun !!
