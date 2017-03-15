@@ -37,9 +37,9 @@ def print_result(fcnt, p):
         if k > 25:
             overload += result
         if k and (k + 1) % 6 == 0:
-            print (k, "->", "%0.3f " % result, sep='')
+            print(k, "->", "%0.3f " % result, sep='')
         else:
-            print (k, "->", "%0.3f " % result, end='\t', sep='')
+            print(k, "->", "%0.3f " % result, end='\t', sep='')
 
 if len(sys.argv) == 3:
     try:
