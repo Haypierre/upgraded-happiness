@@ -15,7 +15,7 @@ overload = 0
 def nb_combination(n, k):
     if (k < 0 or n < 0 or k > n):
         sys.exit(84)
-    return (math.factorial(n) / (math.factorial(k) * math.factorial(n - k)))
+    return (math.factorial(n) / (math.factorial(k) * math.factorial(n - k))
 
 def binomial(k, p, n):
     return (nb_combination(n, k) *  math.pow(p, k) * math.pow(1 - p, n - k))
@@ -25,8 +25,8 @@ def poisson(k, p, *unused):
     return (math.exp(-p) * pow(p, k) / math.factorial(k))
 
 def print_stat(beg):
-    print ("\noverload: ", "%0.1f" % (overload * 100), "%", sep='')
-    print ("computation time:", "%0.2f" % ((time.time() - beg) * 1000), "ms")
+    print("\noverload: ", "%0.1f" % (overload * 100), "%", sep='')
+    print("computation time:", "%0.2f" % ((time.time() - beg) * 1000), "ms")
 
 def print_result(fcnt, p):
     global overload
@@ -49,7 +49,7 @@ if len(sys.argv) == 3:
         sys.exit(84)
     result = int(nb_combination(n, k))
     #print (round(result, -2))
-    print (k , "-combination of a ", n, " set:\n", result, sep='')
+    print(k , "-combination of a ", n, " set:\n", result, sep='')
 
 elif len(sys.argv) == 2:
     if sys.argv[1] == '-h':
