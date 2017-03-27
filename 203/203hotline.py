@@ -20,7 +20,6 @@ def nb_combination(n, k):
 def binomial(k, p, n):
     return (nb_combination(n, k) *  math.pow(p, k) * math.pow(1 - p, n - k))
 
-#argument trick to be callable with globals symbol
 def poisson(k, p, *unused):
     return (math.exp(-p) * pow(p, k) / math.factorial(k))
 
@@ -32,15 +31,19 @@ def print_result(fcnt, p):
     global overload
     if fcnt == "poisson":
         p *= 3500
-    for k in range(51):
+    for k in range(50):
         result = globals()[fcnt](k, p, 3500)
-        if k > 25:
+        if k <= 25:
             overload += result
         if k and (k + 1) % 6 == 0:
             print(k, "->", "%0.3f " % result, sep='')
         else:
             print(k, "->", "%0.3f " % result, end='\t', sep='')
+    result = globals()[fcnt](k + 1, p, 3500)
+    overload = 1 - overload
+    print(k + 1, " -> ", "%0.3f", % result, sep='')
 
+            
 if len(sys.argv) == 3:
     try:
         n = int(sys.argv[1])
@@ -48,7 +51,6 @@ if len(sys.argv) == 3:
     except ValueError:
         sys.exit(84)
     result = int(nb_combination(n, k))
-    #print (round(result, -2))
     print(k , "-combination of a ", n, " set:\n", result, sep='')
 
 elif len(sys.argv) == 2:
@@ -64,7 +66,7 @@ elif len(sys.argv) == 2:
     beg = time.time()
     print_result("binomial", p)
     print_stat(beg)
-    print ("\n\nPoisson distribution:")
+    print ("\nPoisson distribution:")
     beg = time.time()
     overload = 0
     print_result("poisson", p)
