@@ -1,0 +1,163 @@
+#!/usr/bin/env python3
+
+import sys
+
+class Scheduler():
+    """
+        class to schedule a project described inside a csv file.
+        Each line represents a task and contains 4 separate pieces:
+        the task's code, the description, the duration
+        and the list of predecessors task.
+    """
+
+    def __init__(self, path):
+        self.path = path
+        self.graph = dict()
+        self.total_duration = int()
+
+    def parse_file(self):
+        """
+            Parse the file building the graph project.
+            Each line correspond to a task which leads to a new node.
+            A node is for now a dictionnary element assocating to a task's name
+            the list of its predecesors.
+        """
+
+        try:
+            with open(self.path, encoding='latin-1') as file_obj:
+                lines = file_obj.read().splitlines()
+                for line in lines:
+                    start_date = 0
+                    task = line.split(';', 3)
+                    size = len(task)
+                    predecessors = None
+                    if size < 3:
+                        raise Exception("Syntax Error")
+                    elif size > 3:
+                        start_date = -1
+                        predecessors = tuple(task[3].split(';'))
+                    duration = int(task[2])
+                    self.graph[(task[0], False)] = [task[1], duration, predecessors, start_date, []]
+        except Exception as ex:
+            print (ex)
+            exit(84)
+
+
+    def circuit(self, key, predecessors):
+        """
+            recursively travel the dependecies graph avoiding
+            interdepent tasks which would lead to an infinite serch.
+        """
+        if predecessors is not None:
+            for predecessor in predecessors:
+                try:
+                    self.graph[(predecessor, False)]
+                except KeyError:
+                    print ("close circuit")
+                    exit(84)
+                self.graph[(predecessor, True)] = self.graph[(predecessor, False)]
+                del self.graph[(predecessor, False)]
+                self.circuit(key, self.graph[(predecessor, True)][2])
+                self.graph[(predecessor, False)] = self.graph[(predecessor, True)]
+                del self.graph[(predecessor, True)]
+        else:
+            return
+
+    def get_successors(self):
+        for key in self.graph:
+            self.circuit(key, self.graph[key][2])
+            if self.graph[key][2]:
+                for predecessor in self.graph[key][2]:
+                    self.graph[(predecessor, False)][4].append(key)
+
+    def calculate_start_date(self, Node):
+
+        predecessors_start_date = list()
+        if Node[3] >= 0:
+            return -1
+        for predecessor in Node[2]:
+            end_date = self.graph[(predecessor, False)][3]
+            if end_date == -1:
+                return -2
+            end_date += self.graph[(predecessor, False)][1]
+            predecessors_start_date.append(end_date)
+
+        if len(predecessors_start_date) > 1:
+            ret = max(predecessors_start_date)
+        else:
+            ret = predecessors_start_date[0]
+        return ret
+
+    def calculate_all_start_date(self):
+
+        over = False
+        while over == False:
+            over = True
+            for key in self.graph:
+                sd = self.calculate_start_date(self.graph[key])
+                if sd == -2:
+                    over = False
+                elif sd >= 0:
+                    self.graph[key][3] = sd
+
+        self.graph = sorted(self.graph.items(), key=lambda x:x[1][3])
+
+    def calculate_totale_duration(self):
+
+        end_dates = list()
+        for node in self.graph:
+            end_dates.append(node[1][3] + node[1][1])
+        self.total_duration = max(end_dates)
+
+
+    def calculate_max_sd(self):
+
+        last = len(self.graph) - 1
+        for index in range(last, -1, -1):
+            values = list()
+            if len(self.graph[index][1][4]) == 0:
+                self.graph[index][1].append(self.total_duration - self.graph[index][1][1])
+            else:
+                for successor in self.graph[index][1][4]:
+                    for node in self.graph:
+                        if node[0] == successor:
+                            values.append(node[1][5] - self.graph[index][1][1])
+                size = len(values)
+                if  size > 1:
+                    self.graph[index][1].append(min(values))
+                elif size == 1:
+                    self.graph[index][1].append(values[0])
+                else:
+                    pass
+        # Get a sorted list from the initiall dictonnary to represent the graph
+        self.graph = sorted(self.graph, key=lambda x: (x[1][3], x[1][1]))
+
+    def output(self):
+
+        print ("total duration of construction:", self.total_duration, "weeks\n")
+        for task in self.graph:
+            if task[1][3] != task[1][5]:
+                print (task[0][0], " must begin between t=", task[1][3], " and t=", task[1][5], sep="")
+            else:
+                print (task[0][0], " must begin at t=", task[1][3], sep="")
+        print("")
+        for task in self.graph:
+            print (task[0][0], "\t", "(", task[1][5] - task[1][3], ")\t", sep="", end="")
+            for i in range(0, task[1][3]):
+                print(" ", end="")
+            for i in range(0, task[1][1]):
+                print("=", end="")
+            print("")
+
+
+if len(sys.argv) != 2:
+    exit(84)
+
+#Instanciate the class, starting to actually use the above code
+construction = Scheduler(sys.argv[1])
+construction.parse_file()
+construction.get_successors()
+construction.calculate_all_start_date()
+construction.calculate_totale_duration()
+construction.calculate_max_sd()
+construction.output()
