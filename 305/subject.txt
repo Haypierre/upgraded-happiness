@@ -1,0 +1,8 @@
+In the construction industry, the foreman is the person who manages, among other things, the scheduling of a construction
+site, and who also plans when contractors will intervene (which can be frequently). In order to do this, they
+have software that uses all the methods of operational research.
+You must create a project’s software that helps organize construction, based on the MPM method: starting from a file
+that describes all of the project’s tasks, you will display the following:
+• total duration of construction,
+• the earliest and latest dates for each task,
+• a Gantt diagram that specifies intervals of fluctuation.
