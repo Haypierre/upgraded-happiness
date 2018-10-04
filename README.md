@@ -1,4 +1,4 @@
-This is a repositary created to show some simple math application using pyhton3.
+This is a repository created to show some simple math application using pyhton3.
 
 You will find in every subdirectory the python script solution with the associated subject.
 
